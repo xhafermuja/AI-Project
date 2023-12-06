@@ -476,9 +476,9 @@ class Student:
                 my_cursor = conn.cursor()
                 my_cursor.execute("Select * from student")
                 myresult= my_cursor.fetchall()
-                id= 0
+                id= int(self.var_std_id.get())
                 for x in myresult:
-                    id+=1
+                    id
                 my_cursor.execute(
                     "update student set Dep=%s, course=%s, Year=%s, Semester=%s, Name=%s, Division=%s, Roll=%s, Gender=%s, Dob=%s, Email=%s, Phone=%s, Address=%s, Teacher=%s, PhotoSample=%s where Student_id=%s",
                     (
@@ -496,7 +496,7 @@ class Student:
                         self.var_address.get(),
                         self.var_teacher.get(),
                         self.var_radio1.get(),
-                        self.var_std_id.get()==id+1
+                        self.var_std_id.get()==id
 
                     ))
                 conn.commit()
@@ -527,7 +527,7 @@ class Student:
                         img_id+=1
                         face= cv2.resize(face_cropped(my_frame),(450,450))
                         face= cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-                        file_name_path = r"C:\Users\Rrezart\Desktop\AI-Project-main\data\user." + str(id) + "." + str(img_id) + ".jpg"
+                        file_name_path = r"C:\Users\xhafe\Desktop\FSHKHulumtuesit\data\user." + str(id) + "." + str(img_id) + ".jpg"
                         cv2.imwrite(file_name_path, face)
                         cv2.putText(face,str(img_id),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,0),2)
                         cv2.imshow("Cropped Face", face)
