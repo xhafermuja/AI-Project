@@ -1,11 +1,16 @@
 from tkinter import *
 from PIL import Image, ImageTk
 from student import Student
+import tkinter
+from time import strftime
+from datetime import datetime
 import os
 from student import Student
 from train import Train
 from face_recognition import Face_Recognition
 from attendance import Attendance
+from developer import Developer
+from help import Help
 
 class FaceRecognitionSystem:
     def __init__(self, root):
@@ -24,6 +29,16 @@ class FaceRecognitionSystem:
         #TITLE
         title_lbl = Label(self.root, text="FACE RECOGNITION SYSTEM", font=("Courier New", 35, "bold"), bg="black", fg="red")
         title_lbl.place(x=0,y=0, width=1530, height=45)
+
+        #TIME
+        def time():
+              string = strftime('%H:%M:%S %p')
+              lbl.config(text = string)
+              lbl.after(1000, time)
+
+        lbl = Label(title_lbl, font=('times new roman',14,'bold'),background='white',foreground='blue')
+        lbl.place(x=0,y=0,width=110,height=50)
+        time()
 
         #Student BTN
         std_img = Image.open('images/student.png')
@@ -44,7 +59,7 @@ class FaceRecognitionSystem:
         b1=Button(self.root, image= self.photoimg_fc,command=self.face_data, cursor="hand2")
         b1.place(x=500, y=100, width=200, height=200 )
 
-        b1_1=Button(self.root, text="Face Detector" , cursor="hand2", command=self.face_data, font=("Courier New", 15, "bold"), bg="darkblue", fg="white")
+        b1_1=Button(self.root, text="Face Detector" , cursor="hand2", font=("Courier New", 15, "bold"), bg="darkblue", fg="white")
         b1_1.place(x=500, y=300, width=200, height=40)
 
         #Attendance BTN
@@ -63,10 +78,10 @@ class FaceRecognitionSystem:
         help_img = help_img.resize((200, 200), Image.LANCZOS)
         self.photoimg_help = ImageTk.PhotoImage(help_img)
 
-        b1=Button(self.root, image= self.photoimg_help, cursor="hand2")
+        b1=Button(self.root, image= self.photoimg_help, cursor="hand2",command=self.help_data)
         b1.place(x=1100, y=100, width=200, height=200 )
 
-        b1_1=Button(self.root, text="Help Desk" , cursor="hand2", font=("Courier New", 15, "bold"), bg="darkblue", fg="white")
+        b1_1=Button(self.root, text="Help Desk" , cursor="hand2",command=self.help_data, font=("Courier New", 15, "bold"), bg="darkblue", fg="white")
         b1_1.place(x=1100, y=300, width=200, height=40)
 
         #Train BTN
@@ -96,10 +111,10 @@ class FaceRecognitionSystem:
         dev_img = dev_img.resize((200, 200), Image.LANCZOS)
         self.photoimg_dev = ImageTk.PhotoImage(dev_img)
 
-        b1=Button(self.root, image= self.photoimg_dev, cursor="hand2")
+        b1=Button(self.root, image= self.photoimg_dev, cursor="hand2",command=self.developer_data)
         b1.place(x=800, y=380, width=200, height=200 )
 
-        b1_1=Button(self.root, text="Developers" , cursor="hand2", font=("Courier New", 15, "bold"), bg="darkblue", fg="white")
+        b1_1=Button(self.root, text="Developers" , cursor="hand2",command=self.developer_data, font=("Courier New", 15, "bold"), bg="darkblue", fg="white")
         b1_1.place(x=800, y=580, width=200, height=40)
 
 
@@ -108,7 +123,7 @@ class FaceRecognitionSystem:
         ext_img = ext_img.resize((200, 200), Image.LANCZOS)
         self.photoimg_ext = ImageTk.PhotoImage(ext_img)
 
-        b1=Button(self.root, image= self.photoimg_ext, cursor="hand2")
+        b1=Button(self.root, image= self.photoimg_ext, cursor="hand2",command=self.iExit)
         b1.place(x=1100, y=380, width=200, height=200 )
 
         b1_1=Button(self.root, text="Exit" , cursor="hand2", font=("Courier New", 15, "bold"), bg="darkblue", fg="white")
@@ -119,6 +134,13 @@ class FaceRecognitionSystem:
         os.startfile("data")
 
     #============Functions Buttons=================
+
+    def iExit(self):
+          self.iExit=tkinter.messagebox.askyesno("Face Recognition","Are you sure exit this project",parent=self.root)
+          if self.iExit > 0:
+             self.root.destroy()
+          else:
+                return
 
     def student_details(self):
         self.new_window=Toplevel(self.root)
@@ -135,6 +157,16 @@ class FaceRecognitionSystem:
     def attendance_data(self):
             self.new_window=Toplevel(self.root)
             self.app= Attendance(self.new_window)
+
+
+    def developer_data(self):
+            self.new_window=Toplevel(self.root)
+            self.app= Developer(self.new_window)
+    
+
+    def help_data(self):
+            self.new_window=Toplevel(self.root)
+            self.app= Help(self.new_window)
 
 
 
