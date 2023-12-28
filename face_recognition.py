@@ -42,7 +42,7 @@ class Face_Recognition:
         b1_1.place(x=600, y=650, width=240, height=40)
 
     
-
+    #ME I SHTU CSV
     #=========== Attendance ============
     def mark_attendance(self, i, r, n, d):
         with open("attendance/hyrjet.csv", "r+", newline="\n") as f:
@@ -55,7 +55,7 @@ class Face_Recognition:
                 now = datetime.now()
                 d1 = now.strftime("%d/%m/%Y")
                 dtString = now.strftime("%H:%M:%S")
-                f.writelines(f"\n{i},{r},{n},{d},{dtString},{d1},Preset ")
+                f.writelines(f"\n{i},{r},{n},{d},{dtString},{d1},Present ")
                 
 
     
@@ -72,7 +72,7 @@ class Face_Recognition:
                 id,predict=clf.predict(gray_image[y:y+h,x:x+w])
                 confidence = int((100*(1-predict/300)))
 
-                conn= mysql.connector.connect(host="localhost", username="root", password="", database="face_recognizer")
+                conn= mysql.connector.connect(host="localhost", username="root", password="", database="face_recognize")
                 my_cursor= conn.cursor()
 
                 # Ndryshimi i kodit me pjesen e kodit poshte per shkak te 1 error
@@ -81,7 +81,7 @@ class Face_Recognition:
                 # n = str(n)  # Convert to string
                 n="+".join(n)
 
-                my_cursor.execute("select Roll from student where Student_id="+str(id))
+                my_cursor.execute("select Personal from student where Student_id="+str(id))
                 r = my_cursor.fetchone()
                 # r = str(r)  # Convert to string
                 r="+".join(r)
@@ -96,9 +96,9 @@ class Face_Recognition:
                 # i = str(i)  # Convert to string
                 i="+".join(i)
 
-                if confidence > 77:
+                if confidence > 80:
                     cv2.putText(img, f"ID:{i}", (x,y-75), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255,255,255), 3)
-                    cv2.putText(img, f"Roll:{r}", (x,y-55), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255,255,255), 3)
+                    cv2.putText(img, f"Personal:{r}", (x,y-55), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255,255,255), 3)
                     cv2.putText(img, f"Name:{n}", (x,y-30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255,255,255), 3)
                     cv2.putText(img, f"Departament:{d}", (x,y-5), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255,255,255), 3)
                     self.mark_attendance(i, r, n, d)
@@ -119,7 +119,7 @@ class Face_Recognition:
         clf = cv2.face.LBPHFaceRecognizer_create()
         clf.read("classifier.xml")
         
-        video_cap = cv2.VideoCapture(0)
+        video_cap = cv2.VideoCapture(1)
 
         while True:
             ret, img = video_cap.read()

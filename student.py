@@ -22,7 +22,7 @@ class Student:
         self.var_std_id = StringVar()
         self.var_std_name = StringVar()
         self.var_div = StringVar()
-        self.var_roll = StringVar()
+        self.var_personal = StringVar()
         self.var_gender = StringVar()
         self.var_dob = StringVar()
         self.var_email = StringVar()
@@ -126,12 +126,12 @@ class Student:
         div_combo.current(0)
         div_combo.grid(row=1,column=1, padx=10, pady=5, sticky=W)
 
-        #ROLL NO
-        roll_no_label=Label(class_student_frame, text="Student No:", font=("times new roman", 12, "bold"),bg="white")
-        roll_no_label.grid(row=1, column=2, padx=10, pady=5, sticky=W)
+        #Personal Number NO
+        personal_no_label=Label(class_student_frame, text="Personal No:", font=("times new roman", 12, "bold"),bg="white")
+        personal_no_label.grid(row=1, column=2, padx=10, pady=5, sticky=W)
 
-        roll_no_entry=ttk.Entry(class_student_frame, textvariable=self.var_roll, width=17, font=("times new roman", 12, "bold"))
-        roll_no_entry.grid(row=1,column=3, padx=10, pady=5, sticky=W)
+        personal_no_entry=ttk.Entry(class_student_frame, textvariable=self.var_personal, width=17, font=("times new roman", 12, "bold"))
+        personal_no_entry.grid(row=1,column=3, padx=10, pady=5, sticky=W)
 
         #GENDER
         gender_label=Label(class_student_frame, text="Gender:", font=("times new roman", 12, "bold"),bg="white")
@@ -236,7 +236,7 @@ class Student:
         search_label.grid(row=0, column=0, padx=10, pady=5, sticky=W)
 
         search_combo= ttk.Combobox(search_frame, font=("times new roman", 12, "bold"), width=15, state="readonly")
-        search_combo["values"]=("Select", "Roll_No", "Phone_No")
+        search_combo["values"]=("Select", "Personal_No", "Phone_No")
         search_combo.current(0)
         search_combo.grid(row=0,column=1, padx=2, pady=10, sticky=W)
 
@@ -257,7 +257,7 @@ class Student:
         scroll_x= ttk.Scrollbar(table_frame, orient= HORIZONTAL)
         scroll_y= ttk.Scrollbar(table_frame, orient= VERTICAL)
 
-        self.student_table= ttk.Treeview(table_frame, column=("dep", "course", "year", "sem", "id", "name","div" ,"roll", "gender", "dob", "email", "phone", "address", "teacher", "photo"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
+        self.student_table= ttk.Treeview(table_frame, column=("dep", "course", "year", "sem", "id", "name","div" ,"personal", "gender", "dob", "email", "phone", "address", "teacher", "photo"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
 
         scroll_x.pack(side=BOTTOM, fill=X)
         scroll_y.pack(side=RIGHT, fill=Y)
@@ -271,7 +271,7 @@ class Student:
         self.student_table.heading("id", text="StudentId")
         self.student_table.heading("name", text="Name")
         self.student_table.heading("div", text="Division")
-        self.student_table.heading("roll", text="Roll No")
+        self.student_table.heading("personal", text="Personal No")
         self.student_table.heading("gender", text="Gender")
         self.student_table.heading("dob", text="DOB")
         self.student_table.heading("email", text="Email")
@@ -288,7 +288,7 @@ class Student:
         self.student_table.column("id",  width=100)
         self.student_table.column("name", width=100)
         self.student_table.column("div", width=100)
-        self.student_table.column("roll", width=100)
+        self.student_table.column("personal", width=100)
         self.student_table.column("gender", width=100)
         self.student_table.column("dob", width=100)
         self.student_table.column("email",  width=100)
@@ -309,7 +309,7 @@ class Student:
             messagebox.showerror("Error", "All Fields are required", parent=self.root)
         else:
             try:
-                conn= mysql.connector.connect(host="localhost", username="root", password="", database="face_recognizer")
+                conn= mysql.connector.connect(host="localhost", username="root", password="", database="face_recognize")
                 my_cursor= conn.cursor()
                 my_cursor.execute("insert into student values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (
                                                                                                         self.var_dep.get(),
@@ -319,7 +319,7 @@ class Student:
                                                                                                         self.var_std_id.get(),
                                                                                                         self.var_std_name.get(),
                                                                                                         self.var_div.get(),
-                                                                                                        self.var_roll.get(),
+                                                                                                        self.var_personal.get(),
                                                                                                         self.var_gender.get(),
                                                                                                         self.var_dob.get(),
                                                                                                         self.var_email.get(),
@@ -341,7 +341,7 @@ class Student:
 
     #=====================Fetch Data==================
     def fetch_data(self):
-        conn = mysql.connector.connect(host="localhost", username="root", password="", database="face_recognizer")
+        conn = mysql.connector.connect(host="localhost", username="root", password="", database="face_recognize")
         my_cursor = conn.cursor()
         my_cursor.execute("select * from student")
         data= my_cursor.fetchall()
@@ -368,7 +368,7 @@ class Student:
         self.var_std_id.set(data[4]),
         self.var_std_name.set(data[5]),
         self.var_div.set(data[6]),
-        self.var_roll.set(data[7]),
+        self.var_personal.set(data[7]),
         self.var_gender.set(data[8]),
         self.var_dob.set(data[9]),
         self.var_email.set(data[10]),
@@ -386,16 +386,16 @@ class Student:
             try:
                 update = messagebox.askyesno("Update", "Do you want to update this student details", parent=self.root)
                 if update > 0:
-                    conn = mysql.connector.connect(host="localhost", username="root", password="", database="face_recognizer")
+                    conn = mysql.connector.connect(host="localhost", username="root", password="", database="face_recognize")
                     my_cursor = conn.cursor()
-                    my_cursor.execute("update student set Dep=%s, course=%s, Year=%s, Semester=%s, Name=%s, Division=%s, Roll=%s, Gender=%s, Dob=%s, Email=%s, Phone=%s, Address=%s, Teacher=%s, PhotoSample=%s where Student_id=%s",(
+                    my_cursor.execute("update student set Dep=%s, course=%s, Year=%s, Semester=%s, Name=%s, Division=%s, Personal=%s, Gender=%s, Dob=%s, Email=%s, Phone=%s, Address=%s, Teacher=%s, PhotoSample=%s where Student_id=%s",(
                                                                                                                                                                                         self.var_dep.get(),
                                                                                                                                                                                         self.var_course.get(),
                                                                                                                                                                                         self.var_year.get(),
                                                                                                                                                                                         self.var_semester.get(),
                                                                                                                                                                                         self.var_std_name.get(),
                                                                                                                                                                                         self.var_div.get(),
-                                                                                                                                                                                        self.var_roll.get(),
+                                                                                                                                                                                        self.var_personal.get(),
                                                                                                                                                                                         self.var_gender.get(),
                                                                                                                                                                                         self.var_dob.get(),
                                                                                                                                                                                         self.var_email.get(),
@@ -426,7 +426,7 @@ class Student:
             try:
                 delete = messagebox.askyesno("Student Delete Page", "Do you want to delelte this student", parent=self.root)
                 if delete > 0:
-                    conn = mysql.connector.connect(host="localhost", username="root", password="", database="face_recognizer")
+                    conn = mysql.connector.connect(host="localhost", username="root", password="", database="face_recognize")
                     my_cursor = conn.cursor()
                     sql = "delete from student where Student_id=%s"
                     val = (self.var_std_id.get(),)
@@ -453,7 +453,7 @@ class Student:
         self.var_std_id.set("")
         self.var_std_name.set("")
         self.var_div.set("Select Division")
-        self.var_roll.set("")
+        self.var_personal.set("")
         self.var_gender.set("Male")
         self.var_dob.set("")
         self.var_email.set("")
@@ -472,7 +472,7 @@ class Student:
             messagebox.showerror("Error", "All Fields are required", parent=self.root)
         else:
             try:
-                conn = mysql.connector.connect(host="localhost", username="root", password="", database="face_recognizer")
+                conn = mysql.connector.connect(host="localhost", username="root", password="", database="face_recognize")
                 my_cursor = conn.cursor()
                 my_cursor.execute("Select * from student")
                 myresult= my_cursor.fetchall()
@@ -480,7 +480,7 @@ class Student:
                 for x in myresult:
                     id
                 my_cursor.execute(
-                    "update student set Dep=%s, course=%s, Year=%s, Semester=%s, Name=%s, Division=%s, Roll=%s, Gender=%s, Dob=%s, Email=%s, Phone=%s, Address=%s, Teacher=%s, PhotoSample=%s where Student_id=%s",
+                    "update student set Dep=%s, course=%s, Year=%s, Semester=%s, Name=%s, Division=%s, Personal=%s, Gender=%s, Dob=%s, Email=%s, Phone=%s, Address=%s, Teacher=%s, PhotoSample=%s where Student_id=%s",
                     (
                         self.var_dep.get(),
                         self.var_course.get(),
@@ -488,7 +488,7 @@ class Student:
                         self.var_semester.get(),
                         self.var_std_name.get(),
                         self.var_div.get(),
-                        self.var_roll.get(),
+                        self.var_personal.get(),
                         self.var_gender.get(),
                         self.var_dob.get(),
                         self.var_email.get(),
@@ -519,7 +519,7 @@ class Student:
                         face_cropped=img[y:y+h, x:x+w]
                         return face_cropped
 
-                cap=cv2.VideoCapture(0)
+                cap=cv2.VideoCapture(1)
                 img_id=0
                 while True:
                     ret, my_frame=cap.read()
@@ -532,7 +532,7 @@ class Student:
                         cv2.putText(face,str(img_id),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,0),2)
                         cv2.imshow("Cropped Face", face)
 
-                    if cv2.waitKey(1)==13 or int(img_id)==100:
+                    if cv2.waitKey(1)==13 or int(img_id)==500:
                         break
                 cap.release()
                 cv2.destroyAllWindows()
