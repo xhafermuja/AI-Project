@@ -28,9 +28,15 @@ class Help:
         f_lbl=Label(self.root, image= self.photoimg_top)
         f_lbl.place(x=0, y=45, width=1530, height=720) 
 
+        dev_label = Label(f_lbl, text="Email:endritjelliqi@gmail.com", font=("times new roman", 30, "bold"), bg="white", anchor=W)
+        dev_label.place(x=510, y=240, width=600)
 
-        dev_label=Label(f_lbl, text="Email:xhafer.muja@gmail.com", font=("times new roman",30, "bold"),bg="white")
-        dev_label.place(x=510,y=300)
+        dev_label = Label(f_lbl, text="Email:xhafer.muja@gmail.com", font=("times new roman", 30, "bold"), bg="white", anchor=W)
+        dev_label.place(x=510, y=300, width=600)
+
+        dev_label = Label(f_lbl, text="Email:rrezartkallaba@gmail.com", font=("times new roman", 30, "bold"), bg="white", anchor=W)
+        dev_label.place(x=510, y=360, width=600)
+
 
 
 
